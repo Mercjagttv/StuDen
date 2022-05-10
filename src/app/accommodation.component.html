@@ -1,0 +1,60 @@
+<header>
+    <div class="search-box">
+        <form [formGroup]="accommodationlist" class="accommodationlist" (ngSubmit)="onSubmit()" style="padding-top:50;">
+            <input type="text" id="search" name="search" class="form-control" formControlName="search">
+            <button class="btn" type="submit" class="SearchButton" style="margin-left:auto; margin-right: auto; padding-top: 50;">Search</button>
+            <h2>Search Accommodation Name</h2>        
+        </form>
+    </div>
+    <br>
+</header>
+<body>
+    <div class="hero-container">
+        <div class="row">
+            <div class="col-sm-4">
+                <div *ngFor = "let accommodation of accommodation_list | async">
+                    <div class="mb-3"
+                        style = "width: 20rem; margin: auto; cursor: pointer;"
+                        [routerLink] = "['/accommodation', accommodation._id]">
+                        <div class="row text-center">
+                            <div class="main-container">
+                                <div class="poster-container">
+                                    <a href="#"><img src="assets/Images/{{ accommodation.image }}" class="poster" /></a>
+                                </div>
+                                <div class="ticket-container">
+                                    <div class="ticket__content">
+                                    <h4 class="ticket__movie-title">{{ accommodation.name }}</h4>
+                                        <p class="ticket__movie-slogan">
+                                            This accommodation is based in
+                                            {{ accommodation.university }} 
+                                        <br>The accommodation can be found at {{ accommodation.number }}
+                                        {{ accommodation.street }}
+                                        <br>This type of accommodation is {{ accommodation.type }} 
+                                        <br>The number of rooms available: {{ accommodation.rooms }} 
+                                        </p>
+                                        <p class="ticket__current-price">MONTHLY PRICE £{{ accommodation.monthlyprice }}.</p>
+                                        <button class="ticket__buy-btn">Review Now</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </body>
+    <footer>
+    <div class="row">
+        <div class="col-sm-6">
+            <button class="btn btn-primary" (click) = "previousPage()">
+                Previous
+            </button>
+        </div>
+        <div class="col-sm-6 text-end">
+            <button class="btn btn-primary" (click) = "nextPage()">
+                Next
+            </button>
+        </div>
+    </div>
+    </footer>

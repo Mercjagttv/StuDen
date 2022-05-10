@@ -1,0 +1,184 @@
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div *ngFor = "let accommodation of accommodation_list | async">
+                <div class="card text-white bg-primary mb-3"
+                    style = "width: 50rem; margin: auto">
+                    <div class="row text-center">
+                    <div class="card-header">
+                        <img src="assets/Images/{{ accommodation.image }}" height="350" width="650"/>
+                    </div>
+                    <div class="card-body">
+                        {{ accommodation.name }}
+                        <br>If you are studying at this University or City
+                        {{ accommodation.university }} 
+                        <br>It is suitated at {{ accommodation.number }}
+                        {{ accommodation.street }}
+                        <br>This accommodation is a {{ accommodation.type }} 
+                        <br>The number of rooms available: {{ accommodation.rooms }} 
+                        <br>£{{ accommodation.monthlyprice }} MONTHLY.
+                    </div>
+                    <div class="card-footer">
+                        Read the Reviews Available
+                    </div>
+                    <div class="col-sm-6">
+                    <button class="btn btn-primary" (click) = "DeleteAccommodation()">
+                        Delete Accommodation
+                    </button>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- col -->
+    </div> <!-- row -->
+</div> <!-- container -->
+</body>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card bg-light mb-3"
+                style = "width: 30rem; margin:auto"
+                *ngFor = "let review of reviews | async">
+                <h3>Accommodation Review Below:</h3>
+                <div class="card-header">
+                    Review by {{ review.username }}
+                </div>
+                <div class="card-body">
+                    {{ review.comment }}
+                <hr>
+                </div>
+                <div class="card-footer">
+                    {{ review.stars }} stars out of 5
+                    <ng-container
+                *ngIf = "authService.isAuthenticated$ | async;
+                else loggedOut"> 
+                <button class="btn btn-primary" (click) = "DeleteReview(review._id)">
+                    Delete Review
+                </button>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <ng-container
+                *ngIf = "authService.isAuthenticated$ | async;
+                else loggedOut"> 
+
+                <h2>Please Review this Accommodation for other students</h2>
+                <form [formGroup] = "reviewForm" (ngSubmit)="onSubmit()">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username"
+                        class="form-control" formControlName="username"
+                        [ngClass]="{ 'error': isInvalid('username')}">
+                    </div>
+                    <div class="form-group">
+                        <label for="comment">Please leave your review below </label>
+                        <textarea id="comment" rows="3" name="comment"
+                                class="form-control" formControlName="comment"
+                                [ngClass]="{ 'error': isInvalid('comment')}"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="stars">Please provide a rating (5 = best)</label>
+                        <select id="stars" name="stars"
+                                class="form-control" formControlName="stars">
+                                <option value="1">1 star</option>
+                                <option value="2">2 stars</option>
+                                <option value="3">3 stars</option>
+                                <option value="4">4 stars</option>
+                                <option value="5">5 stars</option>
+                        </select>
+                    </div>
+
+                    <span *ngIf="isIncomplete()">
+                        You must complete all fields
+                    </span>
+                </form>
+            </ng-container>
+            <ng-template #loggedOut>
+                <h2>Please login to Review this Accommodation</h2>
+            </ng-template> 
+        </div>
+    </div>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card bg-light mb-3"
+                style = "width: 30rem; margin:auto"
+                *ngFor = "let landlordreview of landlordreviews | async">
+                <h3>Landlord Review Below:</h3>
+                <div class="card-header">
+                    Review by {{ landlordreview.username }}
+                </div>
+                <div class="card-body">
+                    {{ landlordreview.comment }}
+                <hr>
+                </div>
+                <div class="card-footer">
+                    {{ landlordreview.stars }} stars out of 5
+                    <ng-container
+                *ngIf = "authService.isAuthenticated$ | async;
+                else loggedOut"> 
+                <button class="btn btn-primary" (click) = "DeleteLandlordreview(landlordreview._id)">
+                    Delete Landlord Review
+                </button>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <ng-container
+                *ngIf = "authService.isAuthenticated$ | async;
+                else loggedOut"> 
+
+                <h2>Please Review this Landlord for other students</h2>
+                <form [formGroup] = "landlordreviewForm" (ngSubmit)="onSubmit()">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username"
+                        class="form-control" formControlName="username"
+                        [ngClass]="{ 'error': isInvalid('username')}">
+                    </div>
+                    <div class="form-group">
+                        <label for="comment">Please leave your landlord review below </label>
+                        <textarea id="comment" rows="3" name="comment"
+                                class="form-control" formControlName="comment"
+                                [ngClass]="{ 'error': isInvalid('comment')}"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="stars">Please provide a rating (5 = best)</label>
+                        <select id="stars" name="stars"
+                                class="form-control" formControlName="stars">
+                                <option value="1">1 star</option>
+                                <option value="2">2 stars</option>
+                                <option value="3">3 stars</option>
+                                <option value="4">4 stars</option>
+                                <option value="5">5 stars</option>
+                        </select>
+                    </div>
+
+                    <span *ngIf="isIncomplete()">
+                        You must complete all fields
+                    </span>
+
+                    <button *ngIf="!isIncomplete()"
+                            type="submit"
+                            class="btn btn-primary">Submit</button>
+                </form>
+            </ng-container>
+            <ng-template #loggedOut>
+                <h2>Please login to Review this Accommodation</h2>
+            </ng-template> 
+        </div>
+    </div>
+</div>
+<div id="myPaypalButtons"></div>
